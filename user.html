@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart EV & Piezoelectric System</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .sidebar ul li:hover {
+            background: #34495e;
+            cursor: pointer;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+            width: calc(100% - 260px);
+        }
+        /* EV Connectivity */
+        .ev-section {
+            text-align: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        #ev-status {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+        }
+        .ev-button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        /* Piezoelectric Section */
+        .piezoelectric-section {
+            text-align: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        .piezoelectric-button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background: #e67e22;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        /* Helmet Detection */
+        .helmet-detection {
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        video {
+            width: 60%;
+            border: 3px solid black;
+            margin-top: 10px;
+        }
+        #helmet-status {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: red;
+        }
+        /* Traffic Insights, Charging Stations & Smart Parking Layout */
+        .grid-container {
+            display: flex;
+            gap: 20px;
+        }
+        .grid-item {
+            flex: 1;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        #traffic-status {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .real-traffic-btn {
+            padding: 10px;
+            font-size: 16px;
+            background: #e67e22;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .station {
+            background: #3498db;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .parking-slot {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .occupied {
+            background: red;
+        }
+        .available {
+            background: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">EV Connectivity</a></li>
+                <li><a href="#">Traffic Insights</a></li>
+                <li><a href="#">Charging Stations</a></li>
+                <li><a href="#">Smart Parking</a></li>
+                <li><a href="#">Piezoelectric System</a></li> <!-- New link for piezoelectric -->
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Welcome to Smart EV & Piezoelectric System!</h1>
+
+            <!-- EV Connectivity Section -->
+            <div class="ev-section">
+                <h3>EV Connectivity</h3>
+                <p id="ev-status">🔴 Not Connected</p>
+                <button class="ev-button" onclick="connectEV()">Connect EV</button>
+            </div>
+
+            <!-- Helmet Detection Section -->
+            <div class="helmet-detection" id="helmet-section">
+                <h3>Helmet Detection</h3>
+                <video id="video" autoplay></video>
+                <p id="helmet-status">🔴 No Helmet Detected! Please wear a helmet to proceed.</p>
+            </div>
+
+            <!-- Piezoelectric Section -->
+            <div class="piezoelectric-section">
+                <h1>Piezoelectric Generator</h1>
+                <button class="piezoelectric-button" onclick="startPiezoelectricSystem()">Let's Start</button>
+            </div>
+
+            <!-- Traffic Insights, Charging Stations, Smart Parking -->
+            <div class="grid-container">
+                <!-- Traffic Insights -->
+                <div class="grid-item">
+                    <h3>Traffic Insights</h3>
+                    <p id="traffic-status">Traffic Status: <strong>Moderate</strong> 🟡</p>
+                    <button class="real-traffic-btn">Real Traffic</button>
+                </div>
+
+                <!-- Charging Stations -->
+                <div class="grid-item">
+                    <h3>Charging Stations</h3>
+                    <div class="station">🔋 Station 1 - Available</div>
+                    <div class="station">🔋 Station 2 - In Use</div>
+                    <div class="station">🔋 Station 3 - Available</div>
+                </div>
+
+                <!-- Smart Parking -->
+                <div class="grid-item">
+                    <h3>Smart Parking</h3>
+                    <div class="parking-slot occupied">X</div>
+                    <div class="parking-slot available">✔</div>
+                    <div class="parking-slot available">✔</div>
+                    <div class="parking-slot occupied">X</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function connectEV() {
+            document.getElementById("ev-status").innerHTML = "🟢 Connected";
+            document.getElementById("ev-status").style.color = "green";
+            document.getElementById("helmet-section").style.display = "block";
+        }
+
+        async function loadModel() {
+            return await cocoSsd.load();
+        }
+
+        async function detectHelmet() {
+            const video = document.getElementById("video");
+            const status = document.getElementById("helmet-status");
+            const model = await loadModel();
+            const predictions = await model.detect(video);
+            const hasHelmet = predictions.some(pred => pred.class === "helmet");
+            status.innerHTML = hasHelmet ? "🟢 Helmet Detected!" : "No Helmet Detected!";
+            status.style.color = hasHelmet ? "green" : "red";
+
+            const speech = new SpeechSynthesisUtterance(status.innerText);
+            window.speechSynthesis.speak(speech);
+        }
+
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            document.getElementById("video").srcObject = stream;
+            setInterval(detectHelmet, 2000);
+        });
+
+        function startPiezoelectricSystem() {
+            alert("Piezoelectric system started! Track steps and generate electricity.");
+            // Add piezoelectric system functionality here
+        }
+        document.querySelector(".real-traffic-btn").addEventListener("click", function() {
+            window.location.href = "traffic map.html"; // Change this to your actual traffic insights page
+        });
+    </script>
+    <script>
+        function startPiezoelectricSystem() {
+            window.location.href = "electric supply.html"; 
+        }
+    </script>
+    
+    
+</body>
+</html>

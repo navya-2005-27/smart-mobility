@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SmartEV</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="auth-container">
+        <video autoplay loop muted playsinline class="background-video">
+            <source src="public/assets/futuristic_bg.mp4" type="video/mp4">
+        </video>
+
+        <div class="auth-box">
+            <h2>Welcome Back</h2>
+            <p>Login to access the Smart EV System</p>
+
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Enter Username">
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Enter Password">
+            </div>
+
+            <button class="auth-button" onclick="redirectToDashboard()">Login</button>
+            <p class="switch-auth">Don't have an account? <a href="signup.html">Sign up</a></p>
+            <button class="login-btn" onclick="redirectToDashboard()"></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: #0a0a0a;
+    color: white;
+    overflow: hidden;
+}
+
+/* Background Video */
+.background-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(40%);
+}
+
+/* Authentication Container */
+.auth-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Glassmorphic Authentication Box */
+.auth-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 20px rgba(0, 212, 255, 0.5);
+    width: 320px;
+    animation: fadeIn 1.5s ease-out;
+}
+
+.auth-box h2 {
+    font-size: 2em;
+    background: linear-gradient(90deg, #00d4ff, #007bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-box p {
+    font-size: 1em;
+    opacity: 0.8;
+}
+
+/* Input Fields */
+.input-group {
+    margin: 15px 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Buttons */
+.auth-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    border: none;
+    background: linear-gradient(45deg, #00d4ff, #007bff);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0px 0px 20px rgba(0, 212, 255, 0.5);
+}
+
+.auth-button:hover {
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    transform: scale(1.05);
+    box-shadow: 0px 0px 30px rgba(0, 212, 255, 0.7);
+}
+
+/* Switch Auth Link */
+.switch-auth {
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.switch-auth a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.switch-auth a:hover {
+    text-decoration: underline;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+</style>
+<script>
+    function redirectToDashboard() {
+        window.location.href = "dashboard.html"; // Redirects to the dashboard page
+    }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ensure all auth buttons redirect to dashboard
+        const authButtons = document.querySelectorAll(".auth-button");
+        authButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                redirectToDashboard();
+            });
+        });
+    });
+</script>

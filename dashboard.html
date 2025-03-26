@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart EV & Piezoelectric System</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Video Background -->
+    <video autoplay muted loop id="bg-video">
+        <source src="background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="sidebar">
+        <h2>🔋 Smart EV</h2>
+        <ul>
+            <li><a href="#">🏠 Home</a></li>
+            <li><a href="#">🚗 EV Connectivity</a></li>
+            <li><a href="#">🗺 Navigation</a></li>
+            <li><a href="#">⚡ Charging Stations</a></li>
+            <li><a href="#">🔄 Energy Sharing</a></li>
+            <li><a href="#">⚙ Settings</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Welcome to Smart EV & Piezoelectric System</h1>
+
+        <div class="button-container">
+            <button class="animated-btn user-btn">👤 User</button>
+            <button class="animated-btn dev-btn">🛠 Developer</button>
+        </div>
+
+        <div class="smart-assistant">
+            <div class="assistant-icon">💡</div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        overflow: hidden;
+    }
+    
+    /* Video Background */
+    #bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        opacity: 0.4; /* Makes the video slightly dim */
+    }
+    
+    .sidebar {
+        width: 230px;
+        background: #1f2937;
+        color: white;
+        padding: 20px;
+        height: 100vh;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .sidebar h2 {
+        text-align: center;
+    }
+    
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .sidebar ul li {
+        padding: 10px 0;
+    }
+    
+    .sidebar ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+    }
+    
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .button-container {
+        margin-top: 50px;
+    }
+    
+    .animated-btn {
+        font-size: 20px;
+        padding: 15px 40px;
+        margin: 20px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        border-radius: 10px;
+    }
+    
+    .user-btn {
+        background: #007bff;
+        color: white;
+    }
+    
+    .dev-btn {
+        background: #28a745;
+        color: white;
+    }
+    
+    .animated-btn:hover {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    
+    /* Smart Assistant */
+    .smart-assistant {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #007bff;
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .smart-assistant:hover {
+        transform: scale(1.1);
+    }
+</style>
+<script>
+    document.querySelector(".smart-assistant").addEventListener("click", function() {
+        alert("Hello! How can I assist you today? 😊");
+    });
+    
+    document.querySelector(".user-btn").addEventListener("click", function() {
+        window.location.href = "user.html";
+    });
+    
+    document.querySelector(".dev-btn").addEventListener("click", function() {
+        window.location.href = "developer.html";
+    });
+    document.querySelector(".smart-assistant").addEventListener("click", function() {
+        window.location.href = "chat.html";  // Replace with your actual page
+    });
+</script>

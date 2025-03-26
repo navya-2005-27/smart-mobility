@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helmet Detection System</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script defer src="helmet-detection.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        video {
+            width: 60%;
+            border: 3px solid black;
+            margin-top: 20px;
+        }
+        #status {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: red;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: none; /* Hidden until an object is detected */
+        }
+    </style>
+</head>
+<body>
+    <h1>Helmet Detection System</h1>
+    <video id="video" autoplay></video>
+    <p id="status">🔴 No Object Detected on Head! Please wear something to proceed.</p>
+    <button id="startEV">Start EV</button>
+
+    <!-- Warning Sound -->
+    <audio id="warningSound" src="alert.mp3"></audio>
+</body>
+</html>
+<script>
+    async function startHelmetDetection() {
+        const video = document.getElementById("video");
+        const statusText = document.getElementById("status");
+        const startEVButton = document.getElementById("startEV");
+        const warningSound = document.getElementById("warningSound");
+    
+        let warningInterval;
+    
+        // Request Camera Access
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(error => {
+                console.error("Camera access error:", error);
+                alert("Please allow camera access and close other apps using the camera.");
+            });
+    
+        // Load Model
+        const model = await cocoSsd.load();
+    
+        function startWarning() {
+            if (!warningInterval) {
+                warningInterval = setInterval(() => {
+                    alert("❌ No helmet or hat detected! Wear one to proceed.");
+                    warningSound.play();
+                }, 3000);
+            }
+        }
+    
+        function stopWarning() {
+            clearInterval(warningInterval);
+            warningInterval = null;
+            warningSound.pause();
+            warningSound.currentTime = 0;
+        }
+    
+        // Detection Loop
+        setInterval(async () => {
+            if (video.videoWidth === 0 || video.videoHeight === 0) {
+                console.warn("Video not loaded yet, skipping detection...");
+                return;
+            }
+    
+            const predictions = await model.detect(video);
+    
+            let headwearDetected = predictions.some(pred =>
+                (pred.class === "helmet" || pred.class === "hat") &&
+                pred.bbox[1] < video.videoHeight / 3
+            );
+    
+            if (headwearDetected) {
+                statusText.innerHTML = "✅ Helmet or Hat detected! You can proceed.";
+                statusText.style.color = "green";
+                startEVButton.style.display = "block";
+                stopWarning();
+            } else {
+                statusText.innerHTML = "❌ No helmet or hat detected! Wear one to proceed.";
+                statusText.style.color = "red";
+                startEVButton.style.display = "none";
+                startWarning();
+            }
+        }, 1000);
+    }
+    
+    // Start on Load
+    window.onload = startHelmetDetection;
+    console.log(predictions);
+
+</script>

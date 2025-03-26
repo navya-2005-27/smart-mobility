@@ -1,0 +1,94 @@
+   /* styles.css */
+   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+   * {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+       font-family:"newtext regular BT";
+     }
+     
+     /* Background Video Styles with Dim Effect */
+     .background-video-container {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       z-index: -1; /* Make sure video is behind other content */
+     }
+     
+     #background-video {
+       width: 100%;
+       height: 100%;
+       object-fit: cover; /* Ensures the video covers the entire screen */
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+     
+     /* Dim Overlay */
+     .background-video-container::after {
+       content: '';
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.4); /* Dim with a dark semi-transparent overlay */
+       z-index: 1; /* Place overlay above the video but below the content */
+     }
+     
+     /* Content Styling */
+     body {
+       font-family: Arial, sans-serif;
+       background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       height: 100vh;
+       color: white; /* White text on dark background */
+     }
+     
+     .container {
+       text-align: center;
+       background-color: rgba(163, 159, 159, 0.7); /* Semi-transparent white background */
+       padding: 20px;
+       border-radius: 8px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+       max-width: 600px;
+       width: 100%;
+     }
+     
+     h1 {
+       color: #333;
+     }
+     
+     .touch-button {
+       background-color: #94a2cd;
+       color: white;
+       padding: 15px 32px;
+       font-size: 18px;
+       border: none;
+       border-radius: 30px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+     }
+     
+     .touch-button:hover {
+       background-color: #75b5ea;
+   
+     }
+     .touch-button:active{
+       background-color: #70739c;
+     }
+     #stepCount, #pressure, #electricity, #rewards {
+       font-size: 24px;
+       margin-top: 20px;
+       color: #333;
+     }
+     
+     #rewards {
+       color: #f5ece5;
+       font-weight: bold;
+       margin-top: 30px;
+     }
